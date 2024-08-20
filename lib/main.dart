@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController();
   String _errorMessage = '';
-  String seikai = '1234';
+  String seikai = '123456';
 
   void check() {
     if (_controller.text == seikai) {
@@ -62,18 +63,37 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Row(
           children: [
-            const SizedBox(width: 16),
+            const SizedBox(width: 32),
             Flexible(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  TextField(
+                  PinCodeTextField(
                     controller: _controller,
-                    onTapOutside: (_) =>
-                        FocusManager.instance.primaryFocus?.unfocus(),
-                    decoration: InputDecoration(
-                      hintText: '認証コードを入力',
+                    appContext: context,
+                    pastedTextStyle: TextStyle(
+                      color: Colors.green.shade600,
+                      fontWeight: FontWeight.bold,
                     ),
+                    length: 6,
+                    animationType: AnimationType.none,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(5),
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeColor: Colors.grey,
+                      selectedColor: Colors.orange,
+                      inactiveColor: Colors.grey,
+                      //なんのパラメータ？？
+                      activeFillColor: Colors.white,
+                      inactiveFillColor: Colors.grey,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _errorMessage = '';
+                      });
+                    },
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -89,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 32),
           ],
         ),
       ),
